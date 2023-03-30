@@ -1,11 +1,14 @@
-Shader "Custom/DepthShader"
+Shader "Custom/BlitDepthShader"
 {
-    SubShader{
+    SubShader
+    {
         Tags
         {
             "RenderType" = "Opaque"
         }
+
         Cull Off ZWrite Off ZTest Always
+
         Pass
         {
             CGPROGRAM

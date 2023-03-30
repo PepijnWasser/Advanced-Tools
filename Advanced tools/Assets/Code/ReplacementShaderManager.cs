@@ -11,7 +11,8 @@ public class ReplacementShaderManager : MonoBehaviour
     {
         camera = GetComponent<Camera>();
         camera.depthTextureMode = DepthTextureMode.Depth;
-        camera.SetReplacementShader(Shader.Find("Custom/DepthShader"), "");
+        camera.SetReplacementShader(Shader.Find("Custom/ReplacementDepth"), "");
+     //   camera.de
     }
 
     
