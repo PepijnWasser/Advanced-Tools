@@ -6,6 +6,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using System.Threading;
 using Task = System.Threading.Tasks.Task;
+using Unity.Collections;
+using UnityEngine.Experimental.Rendering;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Jobs;
+
 
 public class RenderTextureToTexture2dConverter : MonoBehaviour
 {
@@ -80,4 +85,31 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         readPixels,
         gpuAsyncCallback
    }
+
+    private struct EncodeImageJob : IJob
+    {
+        [ReadOnly]
+        [DeallocateOnJobCompletion]
+        public NativeArray<uint> Input;
+
+        public uint Width;
+        public uint Height;
+        public int Quality;
+
+        public NativeList<byte> Output;
+
+        public unsafe void Execute()
+        {
+            NativeArray<byte> temp = ImageConversion.EncodeNativeArrayToJPG(
+                Input, GraphicsFormat.R8G8B8_UNorm, Width, Height, 0, Quality);
+
+            Output.Resize(temp.Length, NativeArrayOptions.UninitializedMemory);
+
+            void* internalPtr = NativeArrayUnsafeUtility.GetUnsafeBufferPointerWithoutChecks(temp);
+            void* outputPtr = NativeArrayUnsafeUtility.GetUnsafeBufferPointerWithoutChecks<byte>(Output);
+            UnsafeUtility.MemCpy(outputPtr, internalPtr, temp.Length * UnsafeUtility.SizeOf<byte>());
+
+            temp.Dispose();
+        }
+    }
 }
