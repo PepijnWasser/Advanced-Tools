@@ -14,7 +14,6 @@ using Unity.Jobs;
 
 public class RenderTextureToTexture2dConverter : MonoBehaviour
 {
-
     public RenderTexture rgbRenderTexture;
     public RenderTexture depthRenderTexture;
 
@@ -27,10 +26,10 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     public CopyMode copyMode;
     float secondCounter = 0;
 
-    private void Awake()
+    private void Start()
     {
-        rgbTexture = new Texture2D(rgbRenderTexture.width, rgbRenderTexture.height, TextureFormat.RGB24, false);
-        depthTexture = new Texture2D(depthRenderTexture.width, depthRenderTexture.height, TextureFormat.RGB24, false);
+        rgbTexture = new Texture2D(rgbRenderTexture.width, rgbRenderTexture.height, TextureFormat.ARGB32, false);
+        depthTexture = new Texture2D(depthRenderTexture.width, depthRenderTexture.height, TextureFormat.ARGB32, false);
 
         rgbDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", rgbTexture);
         depthDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", depthTexture);
@@ -42,6 +41,10 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         {
             CopyRenderTextureToTexture2DReadPixels(rgbRenderTexture, rgbTexture);
             CopyRenderTextureToTexture2DReadPixels(depthRenderTexture, depthTexture);
+        }
+        else if(copyMode == CopyMode.CopyTexture)
+        {
+            CopyRenderTextureToTexture2DCopyTexture(rgbRenderTexture, rgbTexture);
         }
         else
         {
@@ -60,6 +63,13 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     {
         RenderTexture.active = rt;
         texture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        texture.Apply();
+    }
+
+
+    void CopyRenderTextureToTexture2DCopyTexture(RenderTexture rt, Texture2D texture)
+    {
+        Graphics.CopyTexture(rt, texture);
         texture.Apply();
     }
 
@@ -83,7 +93,8 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
    public enum CopyMode
    {
         readPixels,
-        gpuAsyncCallback
+        gpuAsyncCallback,
+        CopyTexture
    }
 
     private struct EncodeImageJob : IJob
