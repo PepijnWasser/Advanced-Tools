@@ -11,6 +11,12 @@ using UnityEngine.Experimental.Rendering;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 
+public enum CopyMode
+{
+    readPixels,
+    gpuAsyncCallbackAsync,
+    gpuAsyncCallbackSync
+}
 
 public class RenderTextureToTexture2dConverter : MonoBehaviour
 {
@@ -39,44 +45,69 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     {
         if(copyMode == CopyMode.readPixels)
         {
-            CopyRenderTextureToTexture2DReadPixels(rgbRenderTexture, rgbTexture);
-            CopyRenderTextureToTexture2DReadPixels(depthRenderTexture, depthTexture);
-        }
-        else
-        {
-            secondCounter += Time.deltaTime;
-            if (secondCounter > 2)
-            {
-                secondCounter = 0;
+            CopyRTToTexture2DReadPixels(rgbRenderTexture, rgbTexture);
+            CopyRTToTexture2DReadPixels(depthRenderTexture, depthTexture);
 
-                CopyRenderTextureToTexture2DAsync(rgbRenderTexture, rgbTexture);
-                CopyRenderTextureToTexture2DAsync(depthRenderTexture, depthTexture);
-            }
+            rgbTexture.name = "RGBReadpixel";
+            depthTexture.name = "DepthReadpixel";
+        }
+        else if(copyMode == CopyMode.gpuAsyncCallbackAsync)
+        {
+            CopyRTToTexture2DGPUAsyncCallbackAsync(rgbRenderTexture, rgbTexture);
+            CopyRTToTexture2DGPUAsyncCallbackAsync(depthRenderTexture, depthTexture);
+
+            rgbTexture.name = "RGBCallbackAsync";
+            depthTexture.name = "DepthCallbackAsync";
+        }
+        else if (copyMode == CopyMode.gpuAsyncCallbackSync)
+        {
+            CopyRTToTexture2DGPUAsyncCallbackSync(rgbRenderTexture, rgbTexture);
+            CopyRTToTexture2DGPUAsyncCallbackSync(depthRenderTexture, depthTexture);
+
+            rgbTexture.name = "RGBCallbackSync";
+            depthTexture.name = "DepthCallbackSync";
         }
     }
 
-    void CopyRenderTextureToTexture2DReadPixels(RenderTexture rt, Texture2D texture)
+    void CopyRTToTexture2DReadPixels(RenderTexture rt, Texture2D texture)
     {
         RenderTexture.active = rt;
         texture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         texture.Apply();
     }
 
-    async Task CopyRenderTextureToTexture2DAsync(RenderTexture rt, Texture2D texture)
+    void CopyRTToTexture2DGPUAsyncCallbackSync(RenderTexture rt, Texture2D texture)
     {
-
-        AsyncGPUReadback.Request(rt, 0, (AsyncGPUReadbackRequest asyncAction) =>
+        AsyncGPUReadbackRequest asyncAction = AsyncGPUReadback.Request(rt, 0);
+        asyncAction.WaitForCompletion();
+        if (asyncAction.hasError)
+        {
+            Debug.Log("Error loading data");
+        }
+        else
         {
             texture.SetPixelData(asyncAction.GetData<byte>(), 0);
             texture.Apply();
+        }
+    }
+
+    void CopyRTToTexture2DGPUAsyncCallbackAsync(RenderTexture rt, Texture2D texture)
+    {
+        AsyncGPUReadback.Request(rt, 0, (AsyncGPUReadbackRequest asyncAction) =>
+        {
+            if (asyncAction.hasError)
+            {
+                Debug.Log("Error loading data");
+            }
+            else
+            {
+                texture.SetPixelData(asyncAction.GetData<byte>(), 0);
+                texture.Apply();
+            }
         });
     }
 
-   public enum CopyMode
-   {
-        readPixels,
-        gpuAsyncCallback,
-   }
+
 
     private struct EncodeImageJob : IJob
     {
