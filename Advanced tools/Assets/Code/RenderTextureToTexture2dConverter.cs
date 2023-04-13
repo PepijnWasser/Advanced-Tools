@@ -45,38 +45,38 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     {
         if(copyMode == CopyMode.readPixels)
         {
-            CopyRTToTexture2DReadPixels(rgbRenderTexture, rgbTexture);
-            CopyRTToTexture2DReadPixels(depthRenderTexture, depthTexture);
+            CopyRTToT2DReadPixels(rgbRenderTexture, rgbTexture);
+            CopyRTToT2DReadPixels(depthRenderTexture, depthTexture);
 
             rgbTexture.name = "RGBReadpixel";
             depthTexture.name = "DepthReadpixel";
         }
         else if(copyMode == CopyMode.gpuAsyncCallbackAsync)
         {
-            CopyRTToTexture2DGPUAsyncCallbackAsync(rgbRenderTexture, rgbTexture);
-            CopyRTToTexture2DGPUAsyncCallbackAsync(depthRenderTexture, depthTexture);
+            CopyRTToT2DGPUAsyncCallbackAsync(rgbRenderTexture, rgbTexture);
+            CopyRTToT2DGPUAsyncCallbackAsync(depthRenderTexture, depthTexture);
 
             rgbTexture.name = "RGBCallbackAsync";
             depthTexture.name = "DepthCallbackAsync";
         }
         else if (copyMode == CopyMode.gpuAsyncCallbackSync)
         {
-            CopyRTToTexture2DGPUAsyncCallbackSync(rgbRenderTexture, rgbTexture);
-            CopyRTToTexture2DGPUAsyncCallbackSync(depthRenderTexture, depthTexture);
+            CopyRTToT2DGPUAsyncCallbackSync(rgbRenderTexture, rgbTexture);
+            CopyRTToT2DGPUAsyncCallbackSync(depthRenderTexture, depthTexture);
 
             rgbTexture.name = "RGBCallbackSync";
             depthTexture.name = "DepthCallbackSync";
         }
     }
 
-    void CopyRTToTexture2DReadPixels(RenderTexture rt, Texture2D texture)
+    void CopyRTToT2DReadPixels(RenderTexture rt, Texture2D texture)
     {
         RenderTexture.active = rt;
         texture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         texture.Apply();
     }
 
-    void CopyRTToTexture2DGPUAsyncCallbackSync(RenderTexture rt, Texture2D texture)
+    void CopyRTToT2DGPUAsyncCallbackSync(RenderTexture rt, Texture2D texture)
     {
         AsyncGPUReadbackRequest asyncAction = AsyncGPUReadback.Request(rt, 0);
         asyncAction.WaitForCompletion();
@@ -91,7 +91,7 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         }
     }
 
-    void CopyRTToTexture2DGPUAsyncCallbackAsync(RenderTexture rt, Texture2D texture)
+    void CopyRTToT2DGPUAsyncCallbackAsync(RenderTexture rt, Texture2D texture)
     {
         AsyncGPUReadback.Request(rt, 0, (AsyncGPUReadbackRequest asyncAction) =>
         {
