@@ -28,8 +28,8 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
 
     private void Start()
     {
-        rgbTexture = new Texture2D(rgbRenderTexture.width, rgbRenderTexture.height, TextureFormat.ARGB32, false);
-        depthTexture = new Texture2D(depthRenderTexture.width, depthRenderTexture.height, TextureFormat.ARGB32, false);
+        rgbTexture = new Texture2D(rgbRenderTexture.width, rgbRenderTexture.height);
+        depthTexture = new Texture2D(depthRenderTexture.width, depthRenderTexture.height);
 
         rgbDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", rgbTexture);
         depthDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", depthTexture);
@@ -41,10 +41,6 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         {
             CopyRenderTextureToTexture2DReadPixels(rgbRenderTexture, rgbTexture);
             CopyRenderTextureToTexture2DReadPixels(depthRenderTexture, depthTexture);
-        }
-        else if(copyMode == CopyMode.CopyTexture)
-        {
-            CopyRenderTextureToTexture2DCopyTexture(rgbRenderTexture, rgbTexture);
         }
         else
         {
@@ -66,35 +62,20 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         texture.Apply();
     }
 
-
-    void CopyRenderTextureToTexture2DCopyTexture(RenderTexture rt, Texture2D texture)
-    {
-        Graphics.CopyTexture(rt, texture);
-        texture.Apply();
-    }
-
     async Task CopyRenderTextureToTexture2DAsync(RenderTexture rt, Texture2D texture)
     {
 
-        //this part exists now in 2018.2 on many platforms:
-        UnityEngine.Rendering.AsyncGPUReadbackRequest request = UnityEngine.Rendering.AsyncGPUReadback.Request(rt, 0);
-        while (!request.done)
+        AsyncGPUReadback.Request(rt, 0, (AsyncGPUReadbackRequest asyncAction) =>
         {
-            await Task.Delay(1);
-        }
-        byte[] rawByteArray = request.GetData<byte>().ToArray();
-
-        texture.LoadRawTextureData(rawByteArray);
-        texture.Apply();
-
-      //  Debug.Log(rawByteArray.Length);
+            texture.SetPixelData(asyncAction.GetData<byte>(), 0);
+            texture.Apply();
+        });
     }
 
    public enum CopyMode
    {
         readPixels,
         gpuAsyncCallback,
-        CopyTexture
    }
 
     private struct EncodeImageJob : IJob
