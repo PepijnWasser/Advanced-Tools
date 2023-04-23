@@ -70,6 +70,7 @@ public class FPSCounter : MonoBehaviour
             m_FpsAccumulator = 0;
             m_FpsNextPeriod += fpsMeasurePeriod;
             m_Text.text = string.Format(display, m_CurrentFps);
+            Debug.Log(m_CurrentFps);
             fpsMomentsCaptured.Add(m_CurrentFps);
         }
     }

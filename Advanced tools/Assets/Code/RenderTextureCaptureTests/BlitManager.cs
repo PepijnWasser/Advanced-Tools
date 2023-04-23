@@ -7,7 +7,7 @@ public class BlitManager : MonoBehaviour
     Camera camera;
     public Material depthMaterial;
 
-    public RenderTexture depthTexture;
+    public RenderTexture[] depthTextures;
     public RenderTexture rgbTexture;
 
 
@@ -19,7 +19,10 @@ public class BlitManager : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture dest)
     {
-        Graphics.Blit(source, depthTexture, depthMaterial);
+        foreach(RenderTexture rt in depthTextures)
+        {
+            Graphics.Blit(source, rt, depthMaterial);
+        }
         Graphics.Blit(source, rgbTexture);
         Graphics.Blit(source, dest);
     }
