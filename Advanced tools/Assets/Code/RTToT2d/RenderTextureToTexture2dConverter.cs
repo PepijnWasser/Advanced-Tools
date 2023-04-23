@@ -26,8 +26,8 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     private Texture2D rgbTexture;
     private Texture2D depthTexture;
 
-    public GameObject rgbDebugObject;
-    public GameObject depthDebugObject;
+    public GameObject rgbDisplay;
+    public GameObject depthDisplay;
 
     public CopyMode copyMode;
     float secondCounter = 0;
@@ -37,8 +37,8 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
         rgbTexture = new Texture2D(rgbRenderTexture.width, rgbRenderTexture.height);
         depthTexture = new Texture2D(depthRenderTexture.width, depthRenderTexture.height);
 
-        rgbDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", rgbTexture);
-        depthDebugObject.GetComponent<Renderer>().material.SetTexture("_MainTex", depthTexture);
+        rgbDisplay.GetComponent<Renderer>().material.SetTexture("_MainTex", rgbTexture);
+        depthDisplay.GetComponent<Renderer>().material.SetTexture("_MainTex", depthTexture);
     }
 
     private void Update()
@@ -108,7 +108,7 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
     }
 
 
-
+    /*
     private struct EncodeImageJob : IJob
     {
         [ReadOnly]
@@ -135,4 +135,5 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
             temp.Dispose();
         }
     }
+    */
 }
