@@ -32,7 +32,7 @@ public class FPSCounter : MonoBehaviour
 
     private void Start()
     {
-        m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
+
     }
 
 
@@ -58,6 +58,7 @@ public class FPSCounter : MonoBehaviour
         secondCounter = 0;
         fpsMomentsCaptured.Clear();
         shouldCaptureFPS = true;
+        m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
     }
 
     void CaptureFPS()
