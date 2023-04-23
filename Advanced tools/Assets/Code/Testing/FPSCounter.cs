@@ -28,7 +28,7 @@ public class FPSCounter : MonoBehaviour
     List<int> fpsMomentsCaptured = new List<int>();
 
     [SerializeField]
-    string fileName;
+    string pathName;
 
     private void Start()
     {
@@ -83,7 +83,7 @@ public class FPSCounter : MonoBehaviour
 
     void SafeFPS(List<int> _fpsMomentsCaptured)
     {
-        string path = Application.dataPath + "/FPSCaptures/" + fileName + "/";
+        string path = Application.dataPath + "/FPSCaptures/" + pathName + "/";
         string data = "";
         foreach(int moment in _fpsMomentsCaptured)
         {
@@ -95,7 +95,10 @@ public class FPSCounter : MonoBehaviour
             if (!File.Exists(path))
             {
                 Directory.CreateDirectory(path);
-                File.WriteAllText(path + DateTime.Now.Month + ".txt", data);
+
+                DateTime currentDateTime = DateTime.Now;
+                string currentDate = currentDateTime.Month + "_" + currentDateTime.Day + "_" + currentDateTime.Hour + "_" + currentDateTime.Minute + "_" + currentDateTime.Second;
+                File.WriteAllText(path + currentDate + ".txt", data);
             }
         }
     }
