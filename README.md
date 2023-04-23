@@ -7,8 +7,12 @@ There are 2 main ways to capture view with different shaders from the same viewi
 Impact of image size:
 After implementing the functionallity and gathering the average FPS under the differrent conditions, and organizing the data in the chart below, a few things become apperent. The first thing you can notice is that the performance does not significantly differ between output image sizes if we make use of 1 camera and the Graphics.Blit call. Another thing you can notice is how that if we use 2 cameras to capture our 2 RenderTextures, the performance is roughly equel to the single camera if we use small images, but has much less fps in bigger images.
 
+![alt text](https://imgur.com/o99bfny)
+
 Impact of output amount:
 It can also be important to see how both of these solutions scale if we want to capture the view with many differrent shaders instead of the 2 we tested so far. To see this impact, I conducted a test which outputs the same image into 5 seperate RenderTextures and an original texture without any shader. If we look at the image below, we can see that having a seperate camera for each texture is once again slower than if we make use of a single Blit call.
+
+![alt text](https://imgur.com/gof94Ql)
 
 Conclusion:
 With the test results above, I can conclude that the Graphics.Blit call has significantly better performance than having several cameras with replacement shaders. One thing were multiple cameras can be more usefull is if we want to have slightly different camera settings or positions.
@@ -18,6 +22,8 @@ Sometimes it can be necessary to convert a RenderTexture into a Texture2D. For e
 
 Comparing different image sizes:
 If we look at the figure below, we can see the performance of the 3 implementations under 2 different iamge sizes. The AsyncGPUReadback executing asnchronously is the fastest with both image sizes. The same method running synchronously comes in second, while the ReadPixels method comes in last. Another thing you can notice is how the difference in performance becomes smaller as the image sizes increase.
+
+![alt text](https://imgur.com/mcTDfjG)
 
 Conclusion:
 Though the ASyncGPUReadback is the fastest of the three implementations, due to it being asynchronous, it might be more unreliable, and not as user friendly for people without experience programmign asynchronously. With the difference in performance becoming smaller the bigger the output images are, It can be the case that the performance is slighlty worse if the images get too big.
