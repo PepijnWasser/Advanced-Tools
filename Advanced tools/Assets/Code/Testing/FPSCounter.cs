@@ -10,30 +10,26 @@ public class FPSCounter : MonoBehaviour
 {
     [SerializeField]
     private float fpsMeasurePeriod = 0.5f;
-    private int m_FpsAccumulator = 0;
-    private float m_FpsNextPeriod = 0;
-    public int m_CurrentFps;
-    const string display = "{0} FPS";
+
+    [SerializeField]
+    string pathName;
 
     [SerializeField]
     private TMP_Text m_Text;
 
     public UnityEvent<List<int>> onStopCapturing;
 
-    bool shouldCaptureFPS = false;
+    private int m_FpsAccumulator = 0;
+    private float m_FpsNextPeriod = 0;
+    public int m_CurrentFps;
+    const string display = "{0} FPS";
 
-    float secondsToCapture;
-    float secondCounter;
+    private bool shouldCaptureFPS = false;
 
-    List<int> fpsMomentsCaptured = new List<int>();
+    private float secondsToCapture;
+    private float secondCounter;
 
-    [SerializeField]
-    string pathName;
-
-    private void Start()
-    {
-
-    }
+    private List<int> fpsMomentsCaptured = new List<int>();
 
 
     private void Update()

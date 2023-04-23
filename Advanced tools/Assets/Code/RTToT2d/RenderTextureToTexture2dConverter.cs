@@ -20,17 +20,21 @@ public enum CopyMode
 
 public class RenderTextureToTexture2dConverter : MonoBehaviour
 {
-    public RenderTexture rgbRenderTexture;
-    public RenderTexture depthRenderTexture;
+    [SerializeField]
+    private RenderTexture rgbRenderTexture;
+    [SerializeField]
+    private RenderTexture depthRenderTexture;
 
     private Texture2D rgbTexture;
     private Texture2D depthTexture;
 
-    public GameObject rgbDisplay;
-    public GameObject depthDisplay;
+    [SerializeField]
+    private GameObject rgbDisplay;
+    [SerializeField]
+    private GameObject depthDisplay;
 
-    public CopyMode copyMode;
-    float secondCounter = 0;
+    [SerializeField]
+    private CopyMode copyMode;
 
     private void Start()
     {
@@ -106,34 +110,4 @@ public class RenderTextureToTexture2dConverter : MonoBehaviour
             }
         });
     }
-
-
-    /*
-    private struct EncodeImageJob : IJob
-    {
-        [ReadOnly]
-        [DeallocateOnJobCompletion]
-        public NativeArray<uint> Input;
-
-        public uint Width;
-        public uint Height;
-        public int Quality;
-
-        public NativeList<byte> Output;
-
-        public unsafe void Execute()
-        {
-            NativeArray<byte> temp = ImageConversion.EncodeNativeArrayToJPG(
-                Input, GraphicsFormat.R8G8B8_UNorm, Width, Height, 0, Quality);
-
-            Output.Resize(temp.Length, NativeArrayOptions.UninitializedMemory);
-
-            void* internalPtr = NativeArrayUnsafeUtility.GetUnsafeBufferPointerWithoutChecks(temp);
-            void* outputPtr = NativeArrayUnsafeUtility.GetUnsafeBufferPointerWithoutChecks<byte>(Output);
-            UnsafeUtility.MemCpy(outputPtr, internalPtr, temp.Length * UnsafeUtility.SizeOf<byte>());
-
-            temp.Dispose();
-        }
-    }
-    */
 }

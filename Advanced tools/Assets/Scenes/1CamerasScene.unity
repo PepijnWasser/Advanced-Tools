@@ -678,10 +678,6 @@ MonoBehaviour:
   depthMaterial: {fileID: 2100000, guid: 8980bf5c3b167f743a21c6284eaac24a, type: 2}
   depthTextures:
   - {fileID: 8400000, guid: 5b7d80437c17e7548b2e6065452aa014, type: 2}
-  - {fileID: 8400000, guid: b704b51f5fd7b2243bcb19f2e6f4d903, type: 2}
-  - {fileID: 8400000, guid: d78aef47e8c434e498ee8a45dd8fa55b, type: 2}
-  - {fileID: 8400000, guid: 61812751a163a6545b783c55a4d3a8b2, type: 2}
-  - {fileID: 8400000, guid: ce91b4f8fe9304d42b5151df26393fda, type: 2}
   rgbTexture: {fileID: 8400000, guid: 13145deea78f54d4c9f557f2f3c1d92e, type: 2}
 --- !u!1 &1039221964
 GameObject:
@@ -1046,12 +1042,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fpsMeasurePeriod: 0.5
-  m_CurrentFps: 0
+  pathName: 1CameraToRT
   m_Text: {fileID: 1649186758}
   onStopCapturing:
     m_PersistentCalls:
       m_Calls: []
-  pathName: 1CameraToRT
+  m_CurrentFps: 0
 --- !u!4 &2000766251
 Transform:
   m_ObjectHideFlags: 0
