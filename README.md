@@ -31,4 +31,29 @@ If we look at the figure below, we can see the performance of the 3 implementati
 ### Conclusion:
 Though the ASyncGPUReadback is the fastest of the three implementations, due to it being asynchronous, it might be more unreliable, and not as user friendly for people without experience programmign asynchronously. With the difference in performance becoming smaller the bigger the output images are, It can be the case that the performance is slighlty worse if the images get too big.
 
+# Tutorials/documentation used:
+BillWagner. (2023, March 9). Lambda expressions - Lambda expressions and anonymous functions. Microsoft Learn. https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions
+Makin’ Stuff Look Good. (2016, April 13). Shaders 103 - Using Replacement Shaders [Video]. YouTube. https://www.youtube.com/watch?v=Tjl8jP5Nuvc
+
+Convert RenderTexture to Texture2D. (n.d.). Stack Overflow. https://stackoverflow.com/questions/44264468/convert-rendertexture-to-texture2d
+
+Kalathil, J. (2018, December 22). Introduction To Replacement Shaders & Shader Keywords. Bitshift Programmer : Game Development, VFX & C# Blog. https://www.bitshiftprogrammer.com/2018/12/introduction-to-replacement-shaders-and-shader-keywords.html#:~:text=A%20replacement%20shader%20is%20a,in%20making%20effects%20like%20SSAO.
+
+The Khronos Group. (2016, 9 juni). Command buffers and pipelines [Video]. YouTube. https://www.youtube.com/watch?v=X8Ob_b3ANzs
+
+Technologies, U. (n.d.). Unity - Scripting API: AsyncGPUReadback. https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadback.html
+
+Technologies, U. (n.d.-b). Unity - Scripting API: AsyncGPUReadbackRequest. https://docs.unity3d.com/ScriptReference/Rendering.AsyncGPUReadbackRequest.html
+
+Technologies, U. (n.d.-c). Unity - Scripting API: Graphics.CopyTexture. https://docs.unity3d.com/ScriptReference/Graphics.CopyTexture.html
+
+Technologies, U. (n.d.-c). Unity - Scripting API: Graphics.Blit. https://docs.unity3d.com/ScriptReference/Graphics.Blit.html
+
+
+
+# Images
 https://imgur.com/a/LJiJeZt
+
+# Inspiration
+https://www.youtube.com/watch?v=6Bts8WeZ6nA
+https://www.youtube.com/watch?v=P4CCMvtUohA
