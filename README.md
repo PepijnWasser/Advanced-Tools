@@ -53,3 +53,7 @@ Technologies, U. (n.d.-c). Unity - Scripting API: Graphics.Blit. https://docs.un
 
 # Images
 https://imgur.com/a/LJiJeZt
+
+# Inspiration
+https://www.youtube.com/watch?v=6Bts8WeZ6nA
+https://www.youtube.com/watch?v=P4CCMvtUohA
