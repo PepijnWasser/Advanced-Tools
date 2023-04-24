@@ -51,7 +51,7 @@ Shader "Custom/ReplacementDepth"
 				depth.b = depthValue;
 				depth.a = 1;
 				return fixed4(i.depth, i.depth, i.depth, 1);
-				return depth;
+				//return depth;
 			}
 			ENDCG
 		}
